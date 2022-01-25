@@ -1,0 +1,21 @@
+/*
+!.prettierrc
+!package.json
+!package-lock.json
+!.gitignore
+!wp-content
+!documentation
+!*.html
+!gulpfile.js
+!debug/
+
+wp-content/*
+!wp-content/plugins
+!wp-content/themes
+wp-content/themes/*
+# !wp-content/themes/neve-child
+# wp-content/themes/neve-child/*
+# !wp-content/themes/neve-child/functions.php
+
+wp-content/plugins/*
+!wp-content/plugins/tmdb_integration
