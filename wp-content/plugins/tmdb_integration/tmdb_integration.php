@@ -32,14 +32,17 @@ Copyright 2005-2015 Automattic, Inc.
 */
 
 // Make sure we don't expose any info if called directly
-if ( !function_exists( 'add_action' ) ) {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
-	exit;
+if (!function_exists('add_action')) {
+    echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+    exit();
 }
 
-define( 'TMDB_INT_VERSION', '4.2.1' );
-define( 'TMDB_INT__MINIMUM_WP_VERSION', '5.0' );
-define( 'TMDB_INT__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define('TMDB_INT_VERSION', '4.2.1');
+define('TMDB_INT__MINIMUM_WP_VERSION', '5.0');
+define('TMDB_INT__PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('TMDB_OPTIONS', 'tmdb_options');
+
+require __DIR__ . '/admin/admin-includes.php';
 
 // register_activation_hook( __FILE__, array( 'Akismet', 'plugin_activation' ) );
 // register_deactivation_hook( __FILE__, array( 'Akismet', 'plugin_deactivation' ) );
