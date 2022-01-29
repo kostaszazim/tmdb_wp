@@ -1,16 +1,17 @@
 <?php
 
-abstract class TMDB_Menu_Page
+abstract class TMDB_Admin_Page
 {
     public $page_slug;
     public static $isParent;
+    protected $menu_name;
+    protected $role;
 
-    function __construct($contruct = true)
+    function __construct($contruct = true,  $menu_name, $role)
     {
         $this->page_slug = $this->setup_page_slug_by_class_name();
         if ($contruct) {
             $this->setup_menu_page();
-            self::$isParent = $this->isParent();
         }
     }
 
@@ -21,9 +22,7 @@ abstract class TMDB_Menu_Page
     }
 
     abstract public function setup_menu_page();
-    abstract public function addTmdbAdminMenu();
     abstract public function displayAdminPage();
-    abstract protected function isParent();
 
     protected function get_children_classes()
     {
