@@ -40,6 +40,7 @@ if (!function_exists('add_action')) {
 define('TMDB_INT_VERSION', '4.2.1');
 define('TMDB_INT__MINIMUM_WP_VERSION', '5.0');
 define('TMDB_INT__PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('TMDB_INT__PLUGIN_DIR_URL', plugin_dir_url(__FILE__));
 define('TMDB_OPTIONS', 'tmdb_options');
 
 require __DIR__ . '/admin/admin-includes.php';

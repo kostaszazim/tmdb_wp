@@ -1,30 +1,28 @@
 <?php
 
-// if (defined('ABSPATH')) {
-//     exit;
-// }
+class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
+{
+    public static $isParent;
 
-// class TMDB_Admin_Page_Dash extends TMDB_Menu_Page 
+    function __construct($menu_name, $role, $icon_filename = "")
+    {
+        parent::__construct($menu_name, $role, $icon_filename);
+    }
 
-// {
 
-//     public function setup_menu_page()
-//     {
-//         add_action('admin_menu', [$this, 'addTmdbAdminMenu'], 9);
-//     }
+    public function setup_menu_page()
+    {
+        add_action('admin_menu', [$this, 'add_main_menu_page'], 9);
+    }
 
-//     public function addTmdbAdminMenu()
-//     {
-//         add_menu_page($this->page_slug, 'TMDB Integration', 'administrator', $this->page_slug, [$this, 'displayAdminPage'], 'dashicons-chart-area', 26 );
-//     }
+    public function add_main_menu_page () {
+        add_menu_page($this->menu_name, $this->menu_name, $this->role, $this->page_slug, [$this, 'displayAdminPage'], $this->icon_filename, 26 );
+    }
 
-//     public function displayAdminPage()
-//     {
-        
-//     }
+    public static function isParent()
+    {
+        return true;
+    }
+}
 
-//     protected function isParent()
-//     {
-//         return true;
-//     }
-// }
+new TMDB_Admin_Main_Menu_Page("TMDB Integration", 'administrator', 'tmdb_icon.png' );
