@@ -1,0 +1,21 @@
+<?php
+
+class TMDB_Admin_Ajax
+{
+    function __construct()
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_ajax_script']);
+        add_action('wp_ajax_fetch_tmdb_configuration', [$this, 'fetch_tmdb_configuration']);
+    }
+
+    public function fetch_tmdb_configuration () {
+
+    }
+
+    public function enqueue_admin_ajax_script () {
+        wp_register_script('tmdb-ajax', TMDB_INT__PLUGIN_DIR_URL . 'admin/assets/js/tmdb-admin-ajax.js', ['jquery']);
+        wp_enqueue_script('tmdb-ajax');
+    }
+}
+
+new TMDB_Admin_Ajax();

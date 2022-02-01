@@ -20,7 +20,7 @@ abstract class TMDB_Admin_Page
         if (!empty($icon_filename)) {
             $filename = TMDB_INT__PLUGIN_DIR_URL . 'assets/icons/' . $icon_filename; 
         } else {
-            'dashicons-chart-area'; // Default fallback
+           $filename = 'dashicons-chart-area'; // Default fallback
         }
         $this->icon_filename = $filename;
     }

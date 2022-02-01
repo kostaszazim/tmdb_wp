@@ -41,9 +41,11 @@ define('TMDB_INT_VERSION', '4.2.1');
 define('TMDB_INT__MINIMUM_WP_VERSION', '5.0');
 define('TMDB_INT__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('TMDB_INT__PLUGIN_DIR_URL', plugin_dir_url(__FILE__));
-define('TMDB_OPTIONS', 'tmdb_options');
+define('TMDB_OPTIONS', 'tmdb_settings');
+define('TMDB_BASE_API_URL', 'https://api.themoviedb.org/3/');
 
 require __DIR__ . '/admin/admin-includes.php';
+require __DIR__ . '/engine/engine.php';
 
 // register_activation_hook( __FILE__, array( 'Akismet', 'plugin_activation' ) );
 // register_deactivation_hook( __FILE__, array( 'Akismet', 'plugin_deactivation' ) );
