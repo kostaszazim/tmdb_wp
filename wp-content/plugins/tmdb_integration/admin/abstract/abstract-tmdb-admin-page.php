@@ -28,7 +28,9 @@ abstract class TMDB_Admin_Page
     protected function setup_page_slug_by_class_name($class_name = "")
     {   
         $this_class_lower = empty($class_name) ?  strtolower(get_class($this)): strtolower( $class_name );
-        return str_replace('_', '-', $this_class_lower);
+        $final_slug = str_replace('_', '-', $this_class_lower);
+        $_SESSION[TMDB_PAGE_NOW_SLUG] = $final_slug;
+        return $final_slug;
     }
 
     abstract public function setup_menu_page();

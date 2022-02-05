@@ -6,7 +6,5 @@ if (!defined('ABSPATH')) {
 
 class TMDB_Configuration_DB
 {
-    public function save_configuration ($configuration) {
-        
-    }
+    
 }

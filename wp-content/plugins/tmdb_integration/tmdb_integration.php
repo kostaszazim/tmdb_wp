@@ -43,6 +43,8 @@ define('TMDB_INT__PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('TMDB_INT__PLUGIN_DIR_URL', plugin_dir_url(__FILE__));
 define('TMDB_OPTIONS', 'tmdb_settings');
 define('TMDB_BASE_API_URL', 'https://api.themoviedb.org/3/');
+define('TMDB_PAGE_NOW_SLUG', 'tmdb_now_slug');
+define('TMDB_PAGE_SESSION_CONFIG', 'tmdb_session_config');
 
 require __DIR__ . '/admin/admin-includes.php';
 require __DIR__ . '/engine/engine.php';
