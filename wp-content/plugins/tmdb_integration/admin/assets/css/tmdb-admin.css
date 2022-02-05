@@ -1,0 +1,21 @@
+.ui-autocomplete {
+  max-height: 265px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+.ui-autocomplete .ui-menu-item-wrapper {
+  display: flex;
+  align-items: center;
+}
+.ui-autocomplete .ui-menu-item-wrapper .poster_thumbnail {
+  margin-right: 20px;
+}
+
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+  height: 265px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJ0bWRiLWFkbWluLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBSUE7RUFDSTtFQUNBO0FBQ0E7RUFDQTs7QUFFQTtFQUNJO0VBQ0E7O0FBRUE7RUFDSTs7O0FBSVY7QUFBQTtBQUFBO0FBR0E7RUFDRSIsImZpbGUiOiJ0bWRiLWFkbWluLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi50bWRiLW1vdmllcy1pbnB1dC1jb250YWluZXIge1xuICAgIFxufVxuXG4udWktYXV0b2NvbXBsZXRlIHtcbiAgICBtYXgtaGVpZ2h0OiAyNjVweDtcbiAgICBvdmVyZmxvdy15OiBhdXRvO1xuICAgIC8qIHByZXZlbnQgaG9yaXpvbnRhbCBzY3JvbGxiYXIgKi9cbiAgICBvdmVyZmxvdy14OiBoaWRkZW47XG5cbiAgICAmIC51aS1tZW51LWl0ZW0td3JhcHBlciB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG5cbiAgICAgICAgJiAucG9zdGVyX3RodW1ibmFpbCB7XG4gICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDIwcHg7XG4gICAgICAgIH1cbiAgICB9XG4gIH1cbiAgLyogSUUgNiBkb2Vzbid0IHN1cHBvcnQgbWF4LWhlaWdodFxuICAgKiB3ZSB1c2UgaGVpZ2h0IGluc3RlYWQsIGJ1dCB0aGlzIGZvcmNlcyB0aGUgbWVudSB0byBhbHdheXMgYmUgdGhpcyB0YWxsXG4gICAqL1xuICAqIGh0bWwgLnVpLWF1dG9jb21wbGV0ZSB7XG4gICAgaGVpZ2h0OiAyNjVweDtcbiAgfSJdfQ== */

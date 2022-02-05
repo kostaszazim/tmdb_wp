@@ -21,3 +21,8 @@ require_once __DIR__ . '/utilities/tmdb-page-config-interceptor.php';
 
 require_once  __DIR__ . '/controllers/tmdb-admin-ajax.php';
 require_once  __DIR__ . '/models/tmdb-configuration.php';
+
+
+// Error Includes
+
+require_once __DIR__ . '/errors/tmdb-error.php';

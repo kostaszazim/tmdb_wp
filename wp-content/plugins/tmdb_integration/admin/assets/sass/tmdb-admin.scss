@@ -1,0 +1,25 @@
+.tmdb-movies-input-container {
+    
+}
+
+.ui-autocomplete {
+    max-height: 265px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+
+    & .ui-menu-item-wrapper {
+        display: flex;
+        align-items: center;
+
+        & .poster_thumbnail {
+            margin-right: 20px;
+        }
+    }
+  }
+  /* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+  * html .ui-autocomplete {
+    height: 265px;
+  }

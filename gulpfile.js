@@ -19,14 +19,14 @@ gulp.task("hello", (done) => {
 
 
 gulp.task('packages-style', () => {
-    return gulp.src("wp-content/plugins/itc_packages/woocommerce/admin/assets/sass/admin_packages.scss", {sourcemaps: true}).pipe(sass()).pipe(gulp.dest('wp-content/plugins/itc_packages/woocommerce/admin/assets/css', {sourcemaps: true})).pipe(browserSync.stream());
+    return gulp.src(`wp-content/plugins/${plugin_folder}/admin/assets/sass/tmdb-admin.scss`, {sourcemaps: true}).pipe(sass()).pipe(gulp.dest(`wp-content/plugins/${plugin_folder}/admin/assets/css`, {sourcemaps: true})).pipe(browserSync.stream());
 })
 
 gulp.task('watch2', () => {
     gulp.watch([`wp-content/plugins/${plugin_folder}/**/*.(php|js|reload)`], gulp.series('reload'));
 })
 gulp.task('watch', () => {
-    gulp.watch(['wp-content/plugins/itc_packages/**/sass/**/*.scss'], gulp.series('packages-style'));
+    gulp.watch([`wp-content/plugins/${plugin_folder}/**/sass/**/*.scss`], gulp.series('packages-style'));
 })
 
 gulp.task('serve', () => {
@@ -47,6 +47,6 @@ gulp.task('reload', function(done){
     done();
 })
 
-gulp.task('live-server', gulp.parallel('serve','watch2'));
+gulp.task('live-server', gulp.parallel('serve','watch','watch2'));
 
 gulp.task('live-server-stream', gulp.parallel('serve', 'watch'));

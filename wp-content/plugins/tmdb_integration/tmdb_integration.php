@@ -51,3 +51,17 @@ require __DIR__ . '/engine/engine.php';
 
 // register_activation_hook( __FILE__, array( 'Akismet', 'plugin_activation' ) );
 // register_deactivation_hook( __FILE__, array( 'Akismet', 'plugin_deactivation' ) );
+
+
+// Debug Ajax Variables to file
+
+function zazim_debug_to_file ($variable) {
+    ob_start();
+    print_r($variable);
+    $output = ob_get_contents();
+    $output .= "\n";
+    ob_end_clean();
+    $file_handler = fopen(ABSPATH. '/debug.txt', 'a');
+    fwrite($file_handler, $output);
+    fclose($file_handler);
+}

@@ -10,6 +10,9 @@ class Tmdb_Wp_Settings
     private $options;
     function __construct()
     {
+        if (wp_doing_ajax()) {
+            return;
+        }
         add_action('admin_init', [$this, 'get_options'], 5); 
         add_action('admin_init', [$this, 'tmdb_settings_init']);
         add_action('admin_init', [$this, 'tmdb_configuration_settings_section']);
@@ -54,20 +57,28 @@ class Tmdb_Wp_Settings
 
     }
 
-    public function tmdb_base_img_url_render () { ?>
+    public function tmdb_base_img_url_render () { 
+       global $tmdb_error;
+        if (!$tmdb_error->has_error()):
+        ?>
      <input type='text' style="min-width: 300px;" value='<?php  echo isset($this->global_options['base_img_url']) && $this->global_options['base_img_url']  ? $this->global_options['base_img_url']:  $this->options->images->secure_base_url  ; ?>' disabled>
      <input type="hidden"  name='<?php echo TMDB_OPTIONS ;?>[base_img_url]' value="<?php  echo $this->options->images->secure_base_url; ?>">
-    <?php
-    }
+    <?php endif; }
 
-    public function tmdb_images_poster_sizes_render () { ?>
+    public function tmdb_images_poster_sizes_render () { 
+       global $tmdb_error;
+        if (!$tmdb_error->has_error()):
+        ?>
 
         <select  style="min-width: 300px;"  name="<?php echo TMDB_OPTIONS ;?>[poster_sizes]">
         <?php foreach ($this->options->images->poster_sizes as $poster_size): ?>
-            <option <?php selected($this->global_options['poster_sizes'], $poster_size); ?> value="<?php echo $poster_size ?>"><?php echo $poster_size ?></option>
+            <option <?php selected(isset( $this->global_options['poster_sizes']) ? $this->global_options['poster_sizes']: false, $poster_size); ?> value="<?php echo $poster_size ?>"><?php echo $poster_size ?></option>
             <?php endforeach; ?>
     </select>
-  <?php  }
+    <?php foreach ($this->options->images->poster_sizes as $key => $poster_size): ?>
+        <input type="hidden" name="<?php echo TMDB_OPTIONS; ?>[available_poster_sizes][<?php echo $key; ?>]" value="<?php  echo $poster_size; ?>">
+        <?php endforeach; ?>
+  <?php endif;  }
 }
 
 new Tmdb_Wp_Settings();
