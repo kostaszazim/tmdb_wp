@@ -23,7 +23,7 @@
             });
           },
           focus: function (event, ui) {
-            $('#tmdb-movie-input').val(ui.item.title);
+            $('#tmdb-movie-input').val(ui.item.title + ' (' +  ui.item.year +')');
             return false;
           },
           select: function (event, ui) {

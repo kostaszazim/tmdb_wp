@@ -1,5 +1,7 @@
 .tmdb-movies-input-container {
-    
+  input[type=text].ui-autocomplete-loading {
+    background-position: 99%;
+  }
 }
 
 .ui-autocomplete {
@@ -22,4 +24,12 @@
    */
   * html .ui-autocomplete {
     height: 265px;
+  }
+
+  #movie_data_table {
+    margin-top: 50px;
+    min-width: 100%;
+    th {
+      text-align: left;
+    }
   }

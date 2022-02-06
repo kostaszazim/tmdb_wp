@@ -1,53 +1,16 @@
+
 <?php
 
 if (!defined('ABSPATH')) {
     exit();
 }
 
-class Tmdb_Wp_Settings
+class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 {
-    private $global_options;
-    private $options;
-    function __construct()
-    {
-        if (wp_doing_ajax()) {
-            return;
-        }
-        add_action('admin_init', [$this, 'get_options'], 5); 
-        add_action('admin_init', [$this, 'tmdb_settings_init']);
-        add_action('admin_init', [$this, 'tmdb_configuration_settings_section']);
-    }
-
-    public function get_options () {
-        $this->global_options =  get_option(TMDB_OPTIONS);
-        $this->options = json_decode($_SESSION[TMDB_PAGE_SESSION_CONFIG]);
-    }
 
     // Basic Settings Init
     public function tmdb_settings_init()
     {
-        register_setting('tmdbPlg', TMDB_OPTIONS);
-
-        add_settings_section('tmdb_api_settings', __('TMDB API Settings', 'tmdb_int'), [$this, 'tmdb_settings_section_cb'], 'tmdbPlg');
-
-        add_settings_field('tmdb_api_key', __('TMDB API Key', 'tmdb_int'), [$this, 'tmdb_api_key_render'], 'tmdbPlg', 'tmdb_api_settings');
-    }
-
-    public function tmdb_settings_section_cb()
-    {
-        echo __('The Movie Database API Settings Section', 'tmdb_int');
-    }
-
-    public function tmdb_api_key_render()
-    {
-        $options = get_option(TMDB_OPTIONS); ?>
-     <input type='text' style="min-width: 300px;" name='<?php echo TMDB_OPTIONS ;?>[api_key]' value='<?php echo $options['api_key']; ?>'>
-    <?php
-    }
-
-    // Configuration Settings section
-
-    public function tmdb_configuration_settings_section () {
 
         add_settings_section('tmdb_config', __('TMDB Configuration Settings', 'tmdb_int'), null, 'tmdbPlg');
 
@@ -81,4 +44,4 @@ class Tmdb_Wp_Settings
   <?php endif;  }
 }
 
-new Tmdb_Wp_Settings();
+new Tmdb_Wp_Configuration_Settings();

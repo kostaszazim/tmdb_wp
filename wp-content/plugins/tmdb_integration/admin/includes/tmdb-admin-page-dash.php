@@ -19,6 +19,8 @@ class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
         wp_enqueue_style('tmdb-admin');
         wp_enqueue_script( 'jquery-ui-autocomplete' );
         wp_enqueue_style('jquery-ui', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css');
+        wp_enqueue_script( 'select2-jq', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'] );
+        wp_enqueue_style('select2-style', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
     }
 
     public function setup_menu_page()

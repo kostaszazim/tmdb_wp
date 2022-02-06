@@ -7,12 +7,15 @@ if (!defined('ABSPATH')) {
 //Abstract includes
 
 require_once __DIR__ . '/abstract/abstract-tmdb-admin-page.php';
+require_once __DIR__ . '/abstract/abstract-tmdb-wp-settings.php';
 
 //Classes Includes
 
 require_once __DIR__ . '/includes/tmdb-admin-page-dash.php';
 require_once __DIR__ . '/includes/tmdb-admin-settings-page.php';
-require_once __DIR__ . '/includes/tmdb-wp-settings.php';
+require_once __DIR__ . '/includes/tmdb-wp-api-settings.php';
+require_once __DIR__ . '/includes/tmdb-wp-configuration-settings.php';
+require_once __DIR__ . '/includes/tmdb-woo-taxonomy-settings.php';
 
 // Utilities includes
 require_once __DIR__ . '/utilities/tmdb-page-config-interceptor.php';

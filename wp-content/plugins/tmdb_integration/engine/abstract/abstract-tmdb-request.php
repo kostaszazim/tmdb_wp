@@ -16,7 +16,7 @@ abstract class Tmdb_Request
 
     protected function setup_api_key () {
         $tmdb_options = get_option(TMDB_OPTIONS);
-        $this->api_key = $tmdb_options['api_key'];
+        $this->api_key = isset($tmdb_options['api_key']) ? $tmdb_options['api_key'] : '' ;
     }
 
     protected function setup_api_base_url () {
