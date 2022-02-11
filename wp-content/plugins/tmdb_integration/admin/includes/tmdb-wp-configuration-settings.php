@@ -17,6 +17,9 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 
         add_settings_field('tmdb_base_poster_size', __('TMDB Poster Size Width (Pixels)', 'tmdb_int'), [$this, 'tmdb_images_poster_sizes_render'],'tmdbPlg','tmdb_config' );
 
+
+        add_settings_field('tmdb_combined_languages', __('Available Languages', 'tmdb_int'), [$this, 'tmdb_available_languages_render'],'tmdbPlg','tmdb_config' );
+
     }
 
     public function tmdb_base_img_url_render () { 
@@ -41,6 +44,13 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
         <input type="hidden" name="<?php echo TMDB_OPTIONS; ?>[available_poster_sizes][<?php echo $key; ?>]" value="<?php  echo $poster_size; ?>">
         <?php endforeach; ?>
   <?php endif;  }
+
+  public function tmdb_available_languages_render () { 
+      global $tmdb_languages;
+      print_r(implode(", ", $tmdb_languages->get_supported_languages()));
+    ?>
+
+ <?php }
 }
 
 new Tmdb_Wp_Configuration_Settings();
