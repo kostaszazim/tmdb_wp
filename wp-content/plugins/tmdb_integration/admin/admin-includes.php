@@ -24,6 +24,7 @@ require_once __DIR__ . '/utilities/tmdb-language-setup.php';
 //MVC Includes
 
 require_once  __DIR__ . '/controllers/tmdb-admin-ajax.php';
+require_once  __DIR__ . '/controllers/tmdb-form-submits.php';
 require_once  __DIR__ . '/models/tmdb-configuration.php';
 require_once  __DIR__ . '/models/tmdb-settings-db.php';
 

@@ -22,9 +22,11 @@ class TMDB_Language_Setup
         $api_translations = new TMDB_Available_Translations_Request();
         $api_translations_response = $api_translations->get_translations();
         $api_translations_response = json_decode($api_translations_response);
-        $this->tmdb_language_codes = array_map(function($element) {
-            return $element->iso_639_1;
-        }, $api_translations_response);
+        if (is_array($api_translations_response) && !empty($api_translations_response)) {
+            $this->tmdb_language_codes = array_map(function($element) {
+                return $element->iso_639_1;
+            }, $api_translations_response);
+        } 
     }
 
     public function get_site_language_codes () {

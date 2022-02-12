@@ -4,55 +4,65 @@ if (!defined('ABSPATH')) {
 }
 $settings_db = new TMDB_Settings_Db();
 $mapped_taxonomies = $settings_db->get_mapped_taxonomies();
-
-print_r($mapped_taxonomies);
+$tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] : false;
+$tmdb_movie_data = unserialize( file_get_contents(ABSPATH. '/fight_club.json'));
 ?>
 <div class="tmdb-movies-input-container wrap">
     <h1><?php echo __('Tmdb Movie Import Page', 'tmdb_int'); ?></h1>
+    <form method="POST">
    <table class="form-table" role="presentation">
        <tbody>
            <tr>
                <th scope="row"><?php echo __('Insert Movie Name', 'tmdb_int'); ?></th>
                <td>
                    <input id="tmdb-movie-input" style="min-width: 500px;" type="text">
-                   <button type="button" class="button button-primary" id="fetch_movie"><?php echo __('Fetch Movie', 'tmdb_int'); ?></button>
+                   <button type="submit" class="button button-primary" id="fetch_movie"><?php echo __('Fetch Movie', 'tmdb_int'); ?></button>
                </td>
            </tr>
        </tbody>
    </table>
 
-   <input type="hidden" id="selected_movie_id">
-<div class="movie_data-container" style="display: block;">
+   <input type="hidden" name="selected_movie_id" id="selected_movie_id">
+    </form>
+<?php if ($tmdb_movie_data instanceof TMDB_Movie): ?>    
+<div class="movie_data-container">
    <h2 class="movie_details"><?php echo __('Movie Data', 'tmdb_int'); ?></h2>
 
    <table id="movie_data_table" role="presentation">
        <tbody>
            <tr>
            <th scope="row"><?php echo __('Available Languages', 'tmdb_int'); ?></th>
+           <?php  global $tmdb_languages; ?>
+           <?php foreach ($tmdb_languages->get_supported_languages() as $language_code): ?>
            <td>
-               <h3>GR</h3>
+               <h3><?php echo strtoupper($language_code) ; ?></h3>
            </td>
-           <td>
-               <h3>EN</h3>
-           </td>
+           <?php endforeach; ?> 
            </tr>
            <tr>
            <th scope="row"><?php echo __('Movie Title', 'tmdb_int'); ?></th>
+           <?php foreach ($tmdb_languages->get_supported_languages() as $language_code): ?>
            <td>
-           <input style="min-width: 400px;" type="text" name="tmdb_movie_title" value="Fight Club">
+           <input style="min-width: 400px;" type="text" name="tmdb_movie_title_<?php echo $language_code; ?>" value="<?php echo $tmdb_movie_data->get_movie_title()[$language_code]; ?>">
            </td>
-           <td>
-           <input style="min-width: 400px;" type="text" name="tmdb_movie_title" value="Fight Club">
-           </td>
+           <?php endforeach; ?>
            </tr>
            <tr>
                <th scope="row"><?php echo __('Movie Poster', 'tmdb_int'); ?></th>
-               <td><img src="https://image.tmdb.org/t/p/w500//pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg" alt="" width="300"></td>
+               <td><img src="<?php echo $tmdb_movie_data->get_movie_poster(); ?>" alt="" width="300"></td>
+           </tr>
+           <tr>
+           <th scope="row"><?php echo __('Movie Summary', 'tmdb_int'); ?></th>
+           <?php foreach ($tmdb_languages->get_supported_languages() as $language_code): ?>
+           <td>
+           <textarea style="min-width: 500px;" type="text" name="tmdb_movie_summary_<?php echo $language_code; ?>" cols="40" rows="10"><?php echo $tmdb_movie_data->get_movie_summary()[$language_code]; ?></textarea>
+           </td>
+           <?php endforeach; ?>
            </tr>
            <tr>
                <th scope="row"><?php echo __('SKU', 'tmdb_int'); ?></th>
                <td>
-                   <input style="min-width: 200px;" type="text" name="tmdb_sku" value="22052">
+                   <input style="min-width: 200px;" type="text" name="tmdb_sku" value="">
                </td>
            </tr>
            <?php if (array_key_exists('genre_woo_taxonomy', $mapped_taxonomies) && $mapped_taxonomies['genre_woo_taxonomy'] !== "-"): 
@@ -63,7 +73,7 @@ print_r($mapped_taxonomies);
                <td>
                   <select class="tmdb-multi-select2" name="tmdb_genre" id="tmdb_genre" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
-                            <option value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
+                            <option value="<?php echo $woo_term->term_id; ?>" data-woo-id="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
                             <?php endforeach; ?>
                   </select>
                </td>
@@ -181,7 +191,23 @@ print_r($mapped_taxonomies);
                </td>
            </tr>
            <?php endif; ?>
+           <?php if (array_key_exists('production_company_woo_taxonomy', $mapped_taxonomies) && $mapped_taxonomies['production_company_woo_taxonomy'] !== "-"): 
+            $woo_terms = get_terms(['taxonomy' =>  $mapped_taxonomies['production_company_woo_taxonomy'], 'hide_empty' => false]);
+            ?>
+           <tr>
+               <th scope="row"><?php echo __('Production Company', 'tmdb_int'); ?></th>
+               <td>
+                  <select class="tmdb-multi-select2" name="tmdb_production_company" id="tmdb_production_company" style="min-width: 200px;" multiple="multiple">
+                        <?php foreach ($woo_terms as $woo_term): ?>
+                            <option value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
+                            <?php endforeach; ?>
+                  </select>
+               </td>
+           </tr>
+           <?php endif; ?>
        </tbody>
    </table>
+   <?php submit_button(__('Import Movie', 'tmdb_int')); ?>
 </div>
+<?php endif; ?>
 </div>  

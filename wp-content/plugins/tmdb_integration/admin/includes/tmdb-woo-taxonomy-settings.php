@@ -100,6 +100,14 @@ class Tmdb_Woo_Taxonomy_Settings extends Tmdb_Wp_Settings
             'tmdbPlg',
             'tmdb_woo_config',
         );
+
+        add_settings_field(
+            'tmdb_production_company_map',
+            __('Select Production Company Woo Taxonomy', 'tmdb_int'),
+            [$this, 'tmdb_production_company_map_render'],
+            'tmdbPlg',
+            'tmdb_woo_config',
+        );
     }
 
     public function tmdb_genre_map_render()
@@ -201,6 +209,18 @@ public function tmdb_director_map_render () { ?>
    <?php foreach ($this->woo_product_attributes as $woo_attribute): ?>
        <option <?php selected(
            isset($this->global_options['director_woo_taxonomy']) ? $this->global_options['director_woo_taxonomy'] : false,
+           $woo_attribute,
+       ); ?> value="<?php echo $woo_attribute; ?>"><?php echo $woo_attribute; ?></option>
+       <?php endforeach; ?>
+</select>
+<?php }
+
+
+public function tmdb_production_company_map_render () { ?>
+    <select  style="min-width: 300px;"  name="<?php echo TMDB_OPTIONS; ?>[production_company_woo_taxonomy]">
+   <?php foreach ($this->woo_product_attributes as $woo_attribute): ?>
+       <option <?php selected(
+           isset($this->global_options['production_company_woo_taxonomy']) ? $this->global_options['production_company_woo_taxonomy'] : false,
            $woo_attribute,
        ); ?> value="<?php echo $woo_attribute; ?>"><?php echo $woo_attribute; ?></option>
        <?php endforeach; ?>

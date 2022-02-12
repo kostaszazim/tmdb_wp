@@ -20,6 +20,11 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 
         add_settings_field('tmdb_combined_languages', __('Available Languages', 'tmdb_int'), [$this, 'tmdb_available_languages_render'],'tmdbPlg','tmdb_config' );
 
+        add_settings_field('tmdb_max_actors', __('Max Actors to Fetch', 'tmdb_int'), [$this, 'tmdb_max_actors_render'],'tmdbPlg','tmdb_config' );
+
+
+        add_settings_field('tmdb_min_actor_tmdb_popularity', __('Minimum Tmdb Actor Popularity', 'tmdb_int'), [$this, 'tmdb_min_actor_tmdb_popularity_render'],'tmdbPlg','tmdb_config' );
+
     }
 
     public function tmdb_base_img_url_render () { 
@@ -47,10 +52,20 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 
   public function tmdb_available_languages_render () { 
       global $tmdb_languages;
-      print_r(implode(", ", $tmdb_languages->get_supported_languages()));
+      echo implode(", ", $tmdb_languages->get_supported_languages());
     ?>
 
  <?php }
+
+public function tmdb_max_actors_render () { 
+  ?>
+    <input type="number" name="<?php echo TMDB_OPTIONS ;?>[max_actors]" value="<?php echo isset($this->global_options['max_actors']) ? $this->global_options['max_actors'] : ""; ?>">
+<?php }
+
+public function tmdb_min_actor_tmdb_popularity_render () { 
+  ?>
+    <input type="number" name="<?php echo TMDB_OPTIONS ;?>[min_actor_popularity]" value="<?php echo isset($this->global_options['min_actor_popularity']) ? $this->global_options['min_actor_popularity'] : ""; ?>">
+<?php }
 }
 
 new Tmdb_Wp_Configuration_Settings();
