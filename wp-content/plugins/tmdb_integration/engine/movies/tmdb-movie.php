@@ -12,9 +12,9 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
     private $movie_poster;
     private $movie_genres = [];
     private $movie_actors = [];
-    private $movie_prod_year;
+    private $movie_prod_year = [];
     private $movie_spoken_languages = [];
-    private $movie_release_date;
+    private $movie_release_date = [];
     private $movie_prod_countries = [];
     private $movie_production_companies = [];
     private $movie_original_title;
@@ -50,7 +50,7 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
                 return $genre;
             }, $response->genres);
             $date = DateTime::createFromFormat('Y-m-d', $response->release_date);
-            $this->movie_prod_year = $date->format('Y');
+            $this->movie_prod_year[$lang_code][] = $date->format('Y');
             $this->movie_spoken_languages[$lang_code] = array_map(function ($element) {
                 $spoken_lang = [];
                 $spoken_lang['id'] = $element->iso_639_1;
@@ -58,17 +58,17 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
                 return $spoken_lang;
             }, $response->spoken_languages);
 
-            $this->movie_release_date = $response->release_date;
-            $this->movie_prod_countries = array_map(function ($element) {
+            $this->movie_release_date[$lang_code][] = $response->release_date;
+            $this->movie_prod_countries[$lang_code] = array_map(function ($element) {
                 $prod_country = [];
                 $prod_country['id'] = $element->iso_3166_1;
                 $prod_country['name'] = $element->name;
                 return $prod_country;
             }, $response->production_countries);
 
-            $this->movie_original_title = $response->original_title;
+            $this->movie_original_title[$lang_code][] = $response->original_title;
 
-            $this->movie_production_companies = array_map(function ($element) {
+            $this->movie_production_companies[$lang_code] = array_map(function ($element) {
                 $company = [];
                 $company['id'] = $element->id;
                 $company['name'] = $element->name;
@@ -95,4 +95,44 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
     public function get_movie_summary () {
         return $this->movie_summary;
     }
+
+    public function get_genres () {
+        return $this->movie_genres;
+    }
+
+    public function get_actors () {
+        return $this->movie_actors;
+    }
+
+    public function get_production_year () {
+        return $this->movie_prod_year;
+    }
+
+    public function get_production_countries () {
+        return $this->movie_prod_countries;
+    }
+    public function get_spoken_languages () {
+        return $this->movie_spoken_languages;
+    }
+
+    public function get_release_date () {
+        return $this->movie_release_date;
+    }
+
+    public function get_original_title () {
+        return $this->movie_original_title;
+    }
+
+    public function get_writers () {
+        return $this->movie_writers;
+    }
+
+    public function get_directors () {
+        return $this->movie_directors;
+    }
+
+    public function get_production_companies () {
+        return $this->movie_production_companies;
+    }
+
 }

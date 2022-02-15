@@ -49,6 +49,14 @@ class TMDB_Language_Setup
         }
     }
 
+    public function get_current_language () {
+        if (class_exists('SitePress')) {
+            return ICL_LANGUAGE_CODE;
+        }
+
+        return  get_bloginfo("language");
+    }
+
     public function get_supported_languages () {
         return $this->supported_languages;
     }

@@ -8,6 +8,7 @@ class TMDB_Admin_Ajax
         $this->options = get_option(TMDB_OPTIONS);
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_ajax_script']);
         add_action('wp_ajax_fetch_tmdb_movie_info', [$this, 'fetch_tmdb_movie_info']);
+        add_action('wp_ajax_tmdb_add_taxonomy_term', [$this, 'tmdb_add_taxonomy_term']);
     }
 
     public function fetch_tmdb_movie_info()
@@ -15,7 +16,7 @@ class TMDB_Admin_Ajax
         if (!isset($_POST['request']) || $_POST['request']['term'] === '') {
             wp_send_json_error('No movie title found');
         }
-        
+
         $movie_term = $_POST['request']['term'];
         $request = new TMDB_Movie_Search_Request();
         $response = $request->search_movie($movie_term);
@@ -31,17 +32,38 @@ class TMDB_Admin_Ajax
         wp_localize_script('tmdb-ajax', 'admin_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
     }
 
-    private function build_movie_response_data ($response) {
+    private function build_movie_response_data($response)
+    {
         $small_image_size = $this->options['available_poster_sizes'][0];
         $new_results = [];
         foreach ($response->results as $key => $result) {
             $new_results[$key]['id'] = $result->id;
             $new_results[$key]['title'] = $result->title;
-            $new_results[$key]['poster_path'] = $this->options['base_img_url']. $small_image_size . $result->poster_path ;
+            $new_results[$key]['poster_path'] = $this->options['base_img_url'] . $small_image_size . $result->poster_path;
             $timestamp = strtotime($result->release_date);
-            $new_results[$key]['year'] = date("Y", $timestamp);
+            $new_results[$key]['year'] = date('Y', $timestamp);
         }
         return $new_results;
+    }
+
+    public function tmdb_add_taxonomy_term()
+    {
+        $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
+        if (isset($_POST['taxonomy']) && isset($_POST['termValue'])  && wp_verify_nonce($nonce, 'tmdb_import')) {
+            $inserted_term = wp_insert_term(esc_html($_POST['termValue']), esc_sql($_POST['taxonomy']));
+            if (isset($_POST['tmdbId'])) {
+                update_term_meta($inserted_term['term_id'], '_tmdb_id', $_POST['tmdbId'] );
+            }
+            if ($inserted_term['term_id']) {
+                $inserted_term = get_term_by('id', $inserted_term['term_id'], $_POST['taxonomy']);
+            } else {
+                wp_send_json_error($inserted_term);
+            }
+            wp_send_json(['status' => 'ok', 'term' => $inserted_term]);
+        } else {
+            wp_send_json_error("No valid data received");
+        }
+        die();
     }
 }
 

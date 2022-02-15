@@ -40,3 +40,38 @@
     });
   });
 })(jQuery);
+
+//Ajax Taxonomy Input
+
+(function($) {
+  $(window).on('load', () => {
+    $('.add-taxonomy-buttons-container button.add-taxonomy').each(function () {
+      $(this).on('click', (e) => {
+        const taxonomy = $(e.target).data('taxonomy');
+        const tmdbId = $(e.target).data('tmdb-id');
+        const termValue = $(e.target).data('tax-name');
+        const nonce = $('[name="_tmdb_nonce"]').val();
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: admin_ajax.ajax_url,
+          data: {
+            action: 'tmdb_add_taxonomy_term',
+            taxonomy,
+            tmdbId,
+            termValue,
+            nonce
+          },
+          success: function (response) {
+            console.log(response);
+            if (response.status === 'ok') {
+              const option = new Option(response.term.name, response.term.term_id, false, true);
+              $(e.target).closest('td').find('select').append(option).trigger('change');
+              $(e.target).animate({opacity: 0});
+            }
+          }
+        })
+      })
+    })
+  })
+})(jQuery)
