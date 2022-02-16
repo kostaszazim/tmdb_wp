@@ -135,4 +135,8 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
         return $this->movie_production_companies;
     }
 
+    public function get_tmdb_movie_id () {
+        return $this->tmdb_movie_id;
+    }
+
 }

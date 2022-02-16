@@ -25,6 +25,8 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 
         add_settings_field('tmdb_min_actor_tmdb_popularity', __('Minimum Tmdb Actor Popularity', 'tmdb_int'), [$this, 'tmdb_min_actor_tmdb_popularity_render'],'tmdbPlg','tmdb_config' );
 
+        add_settings_field('tmdb_movie_prototype', __('Woocommerce Product to use as Prototype', 'tmdb_int'), [$this, 'tmdb_movie_prototype_render'],'tmdbPlg','tmdb_config' );
+
     }
 
     public function tmdb_base_img_url_render () { 
@@ -66,6 +68,12 @@ public function tmdb_min_actor_tmdb_popularity_render () {
   ?>
     <input type="number" name="<?php echo TMDB_OPTIONS ;?>[min_actor_popularity]" value="<?php echo isset($this->global_options['min_actor_popularity']) ? $this->global_options['min_actor_popularity'] : ""; ?>">
 <?php }
+
+public function tmdb_movie_prototype_render () { ?>
+ <input type="text" style="min-width:300px" id="movie_prototype" value="<?php echo isset($this->global_options['selected_movie_prototype_id']) && !empty($this->global_options['selected_movie_prototype_id']) ? get_post( $this->global_options['selected_movie_prototype_id'])->post_title : '' ?>">
+ <input type="hidden" id="selected_movie_prototype_id" name="<?php echo TMDB_OPTIONS ;?>[selected_movie_prototype_id]">
+<?php }
 }
+
 
 new Tmdb_Wp_Configuration_Settings();

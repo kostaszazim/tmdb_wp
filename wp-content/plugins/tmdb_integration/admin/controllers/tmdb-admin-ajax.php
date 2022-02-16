@@ -9,6 +9,7 @@ class TMDB_Admin_Ajax
         add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_ajax_script']);
         add_action('wp_ajax_fetch_tmdb_movie_info', [$this, 'fetch_tmdb_movie_info']);
         add_action('wp_ajax_tmdb_add_taxonomy_term', [$this, 'tmdb_add_taxonomy_term']);
+        add_action('wp_ajax_fetch_local_woo_product', [$this, 'fetch_local_woo_product']);
     }
 
     public function fetch_tmdb_movie_info()
@@ -25,6 +26,50 @@ class TMDB_Admin_Ajax
         die();
     }
 
+    public function fetch_local_woo_product () {
+        if (!isset($_POST['request']) || $_POST['request']['term'] === '') {
+            wp_send_json_error('No movie title found');
+            die();
+        }
+        // WP_Query arguments
+        $args = array(
+        	'post_type'              => array( 'product' ),
+        	'post_status'            => array( 'publish' ),
+        	'posts_per_page'         => '-1',
+        	'meta_query'             => array(
+        		array(
+        			'key'     => '_sku',
+        			'value'   => sanitize_text_field($_POST['request']['term']),
+        			'compare' => 'like',
+        		),
+        	),
+        );
+
+// The Query
+        $results = new WP_Query( $args );
+        if ($results->post_count > 0) {
+            wp_send_json_success($this->build_local_products_array($results));
+            die();
+        }
+        $args = array(
+            'post_type'     => 'product',
+            'post_status'   => 'publish',
+            's' => sanitize_text_field( $_POST['request']['term']),
+        );
+
+        $results = new WP_Query($args);
+        $formated_results = $this->build_local_products_array($results);
+        wp_send_json_success($formated_results);
+        die();
+    }
+
+    private function build_local_products_array ($response) {
+        $formated_results = [];
+        foreach ($response->posts as $post) {
+            array_push($formated_results, ['id' => $post->ID, 'title' => $post->post_title]);
+        }
+        return $formated_results;
+    }
     public function enqueue_admin_ajax_script()
     {
         wp_register_script('tmdb-ajax', TMDB_INT__PLUGIN_DIR_URL . 'admin/assets/js/tmdb-admin-ajax.js', ['jquery']);

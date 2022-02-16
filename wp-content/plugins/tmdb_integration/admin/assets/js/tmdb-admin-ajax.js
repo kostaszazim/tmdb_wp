@@ -41,6 +41,49 @@
   });
 })(jQuery);
 
+
+(function ($) {
+  $(window).on('load', () => {
+    $(function () {
+      const moviePrototypeInput = $('#movie_prototype');
+      if (moviePrototypeInput.length === 0 || moviePrototypeInput.autocomplete === undefined) {
+        return;
+      }
+      moviePrototypeInput
+        .autocomplete({
+          minLength: 3,
+          source: function (request, response) {
+            $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: admin_ajax.ajax_url,
+              data: { action: 'fetch_local_woo_product', request },
+              success: function (data) {
+                // const jsoned_resp = JSON.parse(response.data);
+                response(data.data);
+                //   window.location.reload();
+              },
+            });
+          },
+          focus: function (event, ui) {
+            $('#movie_prototype').val(ui.item.title);
+            return false;
+          },
+          select: function (event, ui) {
+            $('#selected_movie_prototype_id').val(ui.item.id);
+
+            return false;
+          },
+        })
+        .autocomplete('instance')._renderItem = function (ul, item) {
+        return $('<li>')
+          .append('<div>' + item.title + '</div>')
+          .appendTo(ul);
+      };
+    });
+  });
+})(jQuery);
+
 //Ajax Taxonomy Input
 
 (function($) {

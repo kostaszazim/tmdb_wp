@@ -5,6 +5,14 @@ class TMDB_Admin_Sub_Menu_Page extends TMDB_Admin_Page
     function __construct($menu_name, $role, $icon_finename = "")
     {
         parent::__construct($menu_name, $role, $icon_finename);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_tmdb_admin_assets']);
+    }
+
+    public function enqueue_tmdb_admin_assets () {
+        if (!in_array($this->page_slug, $_GET)) {
+            return;
+        }
+        wp_enqueue_script( 'jquery-ui-autocomplete' );
     }
 
     public function setup_menu_page()

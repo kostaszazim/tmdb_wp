@@ -58,6 +58,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
                <th scope="row"><?php echo __('Movie Poster', 'tmdb_int'); ?></th>
                <td><img src="<?php echo $tmdb_movie_data->get_movie_poster(); ?>" alt="" width="300"></td>
                <input type="hidden" name="tmdb_poster_url" value="<?php echo $tmdb_movie_data->get_movie_poster(); ?>">
+               <input type="hidden" name="tmdb_movie_id" value="<?php echo $tmdb_movie_data->get_tmdb_movie_id(); ?>">
            </tr>
            <tr>
            <th scope="row"><?php echo __('Movie Summary', 'tmdb_int'); ?></th>
