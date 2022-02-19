@@ -48,6 +48,7 @@ define('TMDB_PAGE_SESSION_CONFIG', 'tmdb_session_config');
 
 require __DIR__ . '/admin/admin-includes.php';
 require __DIR__ . '/engine/engine.php';
+require __DIR__ . '/woocommerce/woocommerce.php';
 
 // register_activation_hook( __FILE__, array( 'Akismet', 'plugin_activation' ) );
 // register_deactivation_hook( __FILE__, array( 'Akismet', 'plugin_deactivation' ) );

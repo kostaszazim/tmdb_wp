@@ -82,7 +82,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Genre', 'tmdb_int'); ?></th>
                <td class="taxonomy_container">
-                  <select class="tmdb-multi-select2" name="tmdb_genre[]" id="tmdb_genre" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['genre_woo_taxonomy']; ?>[]" id="tmdb_genre" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>" data-woo-id="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -99,7 +99,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Actors', 'tmdb_int'); ?></th>
                <td class="taxonomy_container">
-                  <select class="tmdb-multi-select2" name="tmdb_actors[]" id="tmdb_actors" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['actors_woo_taxonomy']; ?>[]" id="tmdb_actors" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -116,7 +116,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Production Year', 'tmdb_int'); ?></th>
                <td class="taxonomy_container">
-                  <select class="tmdb-multi-select2" name="tmdb_prod_year" id="tmdb_prod_year" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['production_year_woo_taxonomy']; ?>[]" id="tmdb_prod_year" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -133,7 +133,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Spoken Languages', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_spoken_lang" id="tmdb_spoken_lang" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['spoken_language_woo_taxonomy']; ?>[]" id="tmdb_spoken_lang" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -150,7 +150,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Release Date', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_release_date" id="tmdb_release_date" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['release_date_woo_taxonomy']; ?>[]" id="tmdb_release_date" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -167,7 +167,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Production Country', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_production_country" id="tmdb_production_country" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['production_country_woo_taxonomy']; ?>[]" id="tmdb_production_country" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -184,7 +184,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Original Title', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_original_title" id="tmdb_original_title" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['original_title_woo_taxonomy']; ?>[]" id="tmdb_original_title" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?>  value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -201,7 +201,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Writer', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_writer" id="tmdb_writer" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['writer_woo_taxonomy']; ?>[]" id="tmdb_writer" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option  <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -218,7 +218,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Director', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_director" id="tmdb_director" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['director_woo_taxonomy']; ?>[]" id="tmdb_director" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
@@ -235,7 +235,7 @@ $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] 
            <tr>
                <th scope="row"><?php echo __('Production Company', 'tmdb_int'); ?></th>
                <td>
-                  <select class="tmdb-multi-select2" name="tmdb_production_company" id="tmdb_production_company" style="min-width: 200px;" multiple="multiple">
+                  <select class="tmdb-multi-select2" name="<?php echo $mapped_taxonomies['production_company_woo_taxonomy']; ?>[]" id="tmdb_production_company" style="min-width: 200px;" multiple="multiple">
                         <?php foreach ($woo_terms as $woo_term): ?>
                             <?php $taxonomies_matching->match_taxonomies($woo_term); ?>
                             <option <?php echo $taxonomies_matching->get_html($woo_term); ?> value="<?php echo $woo_term->term_id; ?>"><?php echo $woo_term->name; ?></option>
