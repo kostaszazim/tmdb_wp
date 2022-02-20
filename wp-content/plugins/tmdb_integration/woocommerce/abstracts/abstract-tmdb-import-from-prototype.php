@@ -48,9 +48,6 @@ abstract class TMDB_Import_Prototype
         }
         update_post_meta($this->created_product->get_id(), '_tmdb_movie_id', $this->tmdb_movie_info['tmdb_movie_id']);
         $this->created_product->set_name($this->tmdb_movie_info['tmdb_movie_title_' . $this->language_code]);
-        $this->created_product->set_description($this->tmdb_movie_info['tmdb_movie_summary_' . $this->language_code]);
-
-
     }
 
     protected function upload_movie_poster_to_library () {
