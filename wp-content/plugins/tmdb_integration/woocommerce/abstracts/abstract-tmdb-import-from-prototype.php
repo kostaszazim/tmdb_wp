@@ -33,6 +33,7 @@ abstract class TMDB_Import_Prototype
         $this->upload_movie_poster_to_library();
         $this->setup_basic_movie_info();
         $this->update_product_attributes();
+        $this->clear_gallery_images();
         $this->publish_and_save_product();
     }
 
@@ -57,6 +58,10 @@ abstract class TMDB_Import_Prototype
     protected function publish_and_save_product () {
        $created_product_id = $this->created_product->save();
        wp_update_post(['ID' => $created_product_id, 'post_status' => 'publish']);
+    }
+
+    protected function clear_gallery_images () {
+        $this->created_product->set_gallery_image_ids([]);
     }
 
     abstract protected function update_product_attributes ();
