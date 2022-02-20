@@ -12,6 +12,7 @@ abstract class TMDB_Import_Prototype
     protected $product_attributes;
     protected $language_code;
     protected $created_product_id;
+    protected $description_field;
 
     function __construct($prototype_product, $tmdb_movie_info, $language_code)
     {
@@ -21,6 +22,8 @@ abstract class TMDB_Import_Prototype
         if (!isset($tmdb_movie_info['_tmdb_nonce']) || !wp_verify_nonce($tmdb_movie_info['_tmdb_nonce'], 'tmdb_import')) {
             return;
         }
+        $tmdb_options = get_option(TMDB_OPTIONS);
+        $this->description_field = isset($tmdb_options['woo_description_field']) && !empty($tmdb_options['woo_description_field']) ? $tmdb_options['woo_description_field'] : 'full_description';
         $this->prototype_product = $prototype_product;
         $this->tmdb_movie_info = $tmdb_movie_info;
         $this->language_code = $language_code;
@@ -34,7 +37,11 @@ abstract class TMDB_Import_Prototype
     }
 
     protected function setup_basic_movie_info () {
-        $this->created_product->set_description($this->tmdb_movie_info['tmdb_movie_summary_' . $this->language_code]);
+        if ($this->description_field === 'full_description') {
+            $this->created_product->set_description($this->tmdb_movie_info['tmdb_movie_summary_' . $this->language_code]);
+        } elseif ($this->description_field === 'short_description') {
+            $this->created_product->set_short_description($this->tmdb_movie_info['tmdb_movie_summary_' . $this->language_code]);
+        }
         $sku_result = $this->created_product->set_sku($this->tmdb_movie_info['tmdb_sku']);
         if ($sku_result instanceof WP_Error) {
             throw new Exception("product with sku already exists");

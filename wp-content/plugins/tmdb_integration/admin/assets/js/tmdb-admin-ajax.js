@@ -116,5 +116,13 @@
         })
       })
     })
+    $("#tmdb_options").on('submit', function (e) {
+      const prototypeProduct = $("#movie_prototype").val();
+     if (prototypeProduct === '') {
+      $('#selected_movie_prototype_id').val(prototypeProduct);
+     }
+     $("#allow_submit").val('true');
+
+    });
   })
 })(jQuery)

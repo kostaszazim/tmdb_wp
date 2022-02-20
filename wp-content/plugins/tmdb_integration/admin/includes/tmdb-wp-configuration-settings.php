@@ -27,6 +27,8 @@ class Tmdb_Wp_Configuration_Settings extends Tmdb_Wp_Settings
 
         add_settings_field('tmdb_movie_prototype', __('Woocommerce Product to use as Prototype', 'tmdb_int'), [$this, 'tmdb_movie_prototype_render'],'tmdbPlg','tmdb_config' );
 
+        add_settings_field('tmdb_choose_description_field', __('Pass movie description as:', 'tmdb_int'), [$this, 'tmdb_choose_description_field_render'],'tmdbPlg','tmdb_config' );
+
     }
 
     public function tmdb_base_img_url_render () { 
@@ -71,7 +73,14 @@ public function tmdb_min_actor_tmdb_popularity_render () {
 
 public function tmdb_movie_prototype_render () { ?>
  <input type="text" style="min-width:300px" id="movie_prototype" value="<?php echo isset($this->global_options['selected_movie_prototype_id']) && !empty($this->global_options['selected_movie_prototype_id']) ? get_post( $this->global_options['selected_movie_prototype_id'])->post_title : '' ?>">
- <input type="hidden" id="selected_movie_prototype_id" name="<?php echo TMDB_OPTIONS ;?>[selected_movie_prototype_id]">
+ <input type="hidden" id="selected_movie_prototype_id" name="<?php echo TMDB_OPTIONS ;?>[selected_movie_prototype_id]" value="<?php echo $this->global_options['selected_movie_prototype_id']; ?>">
+<?php }
+
+public function tmdb_choose_description_field_render () { ?>
+    <select  style="min-width: 300px;"  name="<?php echo TMDB_OPTIONS ;?>[woo_description_field]">
+      <option  <?php selected(isset( $this->global_options['woo_description_field']) ? $this->global_options['woo_description_field']: false, 'full_description'); ?> value="full_description"><?php echo __('Product Description', 'tmdbPlg'); ?></option>
+      <option  <?php selected(isset( $this->global_options['woo_description_field']) ? $this->global_options['woo_description_field']: false, 'short_description'); ?> value="short_description"><?php echo __('Product Short Description', 'tmdbPlg'); ?></option>
+    </select>
 <?php }
 }
 
