@@ -57,7 +57,7 @@ abstract class TMDB_Import_Prototype
 
     protected function publish_and_save_product () {
        $created_product_id = $this->created_product->save();
-       wp_update_post(['ID' => $created_product_id, 'post_status' => 'publish']);
+       wp_update_post(['ID' => $created_product_id, 'post_status' => 'publish', 'post_name' => GreekSlugGenerator::getSlug($this->tmdb_movie_info['tmdb_movie_title_' . $this->language_code])]);
     }
 
     protected function clear_gallery_images () {
