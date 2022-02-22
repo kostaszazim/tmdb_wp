@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-class TMDB_Import_Simple_Product extends TMDB_Import_Prototype
+class TMDB_Import_Simple_Variable_Product extends TMDB_Import_Prototype
 {
     private $last_position;
     protected function update_product_attributes()
@@ -25,6 +25,8 @@ class TMDB_Import_Simple_Product extends TMDB_Import_Prototype
                     $new_wc_attribute->set_visible($product_attribute->get_visible());
                     $new_wc_attribute->set_variation($product_attribute->get_variation());
                 }
+            } else {
+                $new_wc_attribute = $product_attribute;
             }
 
             $new_attributes[$pa_name] = $new_wc_attribute;

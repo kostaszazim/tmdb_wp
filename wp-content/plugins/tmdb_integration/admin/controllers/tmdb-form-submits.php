@@ -32,11 +32,9 @@ class TMDB_Int_Form_Submits
         if (isset($tmdb_options['selected_movie_prototype_id']) && !empty($tmdb_options['selected_movie_prototype_id'])) {
             $product = wc_get_product($tmdb_options['selected_movie_prototype_id']);
             global $tmdb_languages;
-            if ($product instanceof WC_Product_Simple) {
+            if ($product instanceof WC_Product) {
                 // Create from simple product prototype
-                $tmdb_simple_product = new TMDB_Import_Simple_Product($product, $_POST, $tmdb_languages->get_current_language());
-            } elseif ($product instanceof WC_Product_Variable) {
-                // Create from variable product prototype
+                $tmdb_simple_product = new TMDB_Import_Simple_Variable_Product($product, $_POST, $tmdb_languages->get_current_language());
             }
         } else {
                 // Create without product prototype
