@@ -35,6 +35,12 @@ class TMDB_Int_Form_Submits
             if ($product instanceof WC_Product) {
                 // Create from simple product prototype
                 $tmdb_simple_product = new TMDB_Import_Simple_Variable_Product($product, $_POST, $tmdb_languages->get_current_language());
+                $tmdb_simple_product_id = $tmdb_simple_product->get_created_product_id();
+                foreach ($tmdb_languages->get_supported_languages() as $language_code) {
+                    if ($tmdb_languages->get_current_language() !== $language_code) {
+                       $translated_product_id = new TMDB_Import_Simple_Variable_Product($product, $_POST, $language_code);
+                    }
+                }
             }
         } else {
                 // Create without product prototype

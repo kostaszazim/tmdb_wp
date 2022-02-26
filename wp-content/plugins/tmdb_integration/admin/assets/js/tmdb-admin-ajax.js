@@ -1,4 +1,5 @@
 (function ($) {
+  //Function to search for movie
   $(window).on('load', () => {
     $(function () {
       const movieInput = $('#tmdb-movie-input');
@@ -23,7 +24,7 @@
             });
           },
           focus: function (event, ui) {
-            $('#tmdb-movie-input').val(ui.item.title + ' (' +  ui.item.year +')');
+            $('#tmdb-movie-input').val(ui.item.title + ' (' + ui.item.year + ')');
             return false;
           },
           select: function (event, ui) {
@@ -41,8 +42,8 @@
   });
 })(jQuery);
 
-
 (function ($) {
+  //Search for woo product to use as prototype
   $(window).on('load', () => {
     $(function () {
       const moviePrototypeInput = $('#movie_prototype');
@@ -86,7 +87,7 @@
 
 //Ajax Taxonomy Input
 
-(function($) {
+(function ($) {
   $(window).on('load', () => {
     $('.add-taxonomy-buttons-container button.add-taxonomy').each(function () {
       $(this).on('click', (e) => {
@@ -103,26 +104,24 @@
             taxonomy,
             tmdbId,
             termValue,
-            nonce
+            nonce,
           },
           success: function (response) {
             console.log(response);
             if (response.status === 'ok') {
               const option = new Option(response.term.name, response.term.term_id, false, true);
               $(e.target).closest('td').find('select').append(option).trigger('change');
-              $(e.target).animate({opacity: 0});
+              $(e.target).animate({ opacity: 0 });
             }
-          }
-        })
-      })
-    })
-    $("#tmdb_options").on('submit', function (e) {
-      const prototypeProduct = $("#movie_prototype").val();
-     if (prototypeProduct === '') {
-      $('#selected_movie_prototype_id').val(prototypeProduct);
-     }
-     $("#allow_submit").val('true');
-
+          },
+        });
+      });
     });
-  })
-})(jQuery)
+    $('#tmdb_options').on('submit', function (e) {
+      const prototypeProduct = $('#movie_prototype').val();
+      if (prototypeProduct === '') {
+        $('#selected_movie_prototype_id').val(prototypeProduct);
+      }
+    });
+  });
+})(jQuery);
