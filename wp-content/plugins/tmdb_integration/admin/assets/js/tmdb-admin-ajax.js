@@ -125,3 +125,23 @@
     });
   });
 })(jQuery);
+
+//Clear Duplicate Buttons
+(function ($) {
+  $(window).on('load', () => {
+    const existing_ids = [];
+    $('.add-taxonomy-buttons-container button.add-taxonomy').each(function () {
+        if (existing_ids.includes($(this).data('tmdb-id')) && $(this).data('tmdb-id') !== "" ) {
+          $(this).remove();
+        } else {
+          existing_ids.push($(this).data('tmdb-id'));
+        }
+    });
+    $('#tmdb_options').on('submit', function (e) {
+      const prototypeProduct = $('#movie_prototype').val();
+      if (prototypeProduct === '') {
+        $('#selected_movie_prototype_id').val(prototypeProduct);
+      }
+    });
+  });
+})(jQuery);
