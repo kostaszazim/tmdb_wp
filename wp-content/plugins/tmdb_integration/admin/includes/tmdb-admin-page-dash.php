@@ -16,6 +16,7 @@ class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
             return;
         }
         wp_register_style('tmdb-admin', TMDB_INT__PLUGIN_DIR_URL . '/admin/assets/css/tmdb-admin.css');
+        add_action('admin_footer', [$this, 'add_micromodal_markup'], PHP_INT_MAX);
         wp_enqueue_style('tmdb-admin');
         wp_enqueue_script( 'jquery-ui-autocomplete' );
         wp_enqueue_style('jquery-ui', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css');
@@ -30,6 +31,35 @@ class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
     public function setup_menu_page()
     {
         add_action('admin_menu', [$this, 'add_main_menu_page'], 9);
+    }
+
+    public function add_micromodal_markup () {
+	ob_start(); ?>
+	<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+      <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+        <header class="modal__header">
+          <h2 class="modal__title" id="modal-1-title">
+            Micromodal
+          </h2>
+          <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+        </header>
+        <main class="modal__content" id="modal-1-content">
+          <p>
+            Try hitting the <code>tab</code> key and notice how the focus stays within the modal itself. Also, <code>esc</code> to close modal.
+          </p>
+        </main>
+        <footer class="modal__footer">
+          <button class="modal__btn modal__btn-primary">Continue</button>
+          <button class="modal__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+<?php
+$output = ob_get_contents();
+ob_end_clean();
+echo $output;
     }
 
     public function add_main_menu_page()

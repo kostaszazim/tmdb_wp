@@ -110,7 +110,7 @@
             console.log(response);
             if (response.status === 'ok') {
               const option = new Option(response.term.name, response.term.term_id, false, true);
-              $(e.target).closest('td').find('select').append(option).trigger('change');
+              $(e.target).closest('td').find('select').append(option);
               $(e.target).animate({ opacity: 0 });
             }
           },
