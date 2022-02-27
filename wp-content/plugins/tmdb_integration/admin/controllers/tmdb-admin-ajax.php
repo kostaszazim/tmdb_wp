@@ -96,7 +96,7 @@ class TMDB_Admin_Ajax
         $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
         if (isset($_POST['taxonomy']) && isset($_POST['termValue'])  && wp_verify_nonce($nonce, 'tmdb_import')) {
             $inserted_term = wp_insert_term(esc_html($_POST['termValue']), esc_sql($_POST['taxonomy']));
-            if (isset($_POST['tmdbId'])) {
+            if (isset($_POST['tmdbId']) && ($inserted_term instanceof WP_Term)) {
                 update_term_meta($inserted_term['term_id'], '_tmdb_id', $_POST['tmdbId'] );
             }
             if ($inserted_term['term_id']) {
