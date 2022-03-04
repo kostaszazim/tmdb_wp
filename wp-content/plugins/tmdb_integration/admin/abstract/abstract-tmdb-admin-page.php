@@ -9,11 +9,17 @@ abstract class TMDB_Admin_Page
 
     function __construct($menu_name, $role, $icon_filename = '')
     {
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_lodash']);
         $this->setup_icon_filename($icon_filename);
         $this->page_slug = $this->setup_page_slug_by_class_name();
         $this->menu_name = $menu_name;
         $this->role = $role;
         $this->setup_menu_page();
+        
+    }
+
+    public function enqueue_lodash () {
+        wp_enqueue_script('ladash', TMDB_INT__PLUGIN_DIR_URL. '/admin/libs/lodash/lodash.js');
     }
 
     protected function setup_icon_filename ($icon_filename) {
