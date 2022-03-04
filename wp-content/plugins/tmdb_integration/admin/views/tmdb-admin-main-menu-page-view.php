@@ -10,7 +10,7 @@ if (isset($_POST['submit']) && $_POST['submit'] === 'Import Movie') {
 $settings_db = new TMDB_Settings_Db();
 $mapped_taxonomies = $settings_db->get_mapped_taxonomies();
 $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] : false;
-$tmdb_movie_data = unserialize( file_get_contents(ABSPATH. '/fight_club.json'));
+//$tmdb_movie_data = unserialize( file_get_contents(ABSPATH. '/fight_club.json'));
 //file_put_contents(ABSPATH. '/fight_club.json', serialize( $tmdb_movie_data));
 
 ?>
