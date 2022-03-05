@@ -7,6 +7,8 @@
       $(this).on('select2:select', (e) => {
         $('#chosen_taxonomy_override option').remove();
         let selectedItem = e.params.data;
+        const wooId = selectedItem.id;
+        const wooTax = $(e.target).closest('td').find('select').attr('name').replace("[]", "");
         let title = $('#modal-1-title').data("original-title");
         title = title.replace('%taxonomy%', selectedItem.text);
         $('#modal-1-title').html(title);
@@ -25,6 +27,14 @@
         });
         if (selectElements.length > 0) {
           MicroModal.show('modal-1');
+          $('.modal__btn.modal__btn-primary').on('click', function (e) {
+            e.preventDefault();
+            const selectedTmdbTax = $('#chosen_taxonomy_override').val();
+            const selectedTmdbTaxId = _.filter(selectElements, (element) => {
+              return element.title === selectedTmdbTax;
+            }).pop();
+            //$.ajax()
+          })
         }
       });
     });

@@ -46,7 +46,7 @@ class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
         </header>
         <main class="modal__content" id="modal-1-content">
           <p>
-            <select name="chosen_taxonomy_override" id="chosen_taxonomy_override"></select>
+            <select name="chosen_taxonomy_override" id="chosen_taxonomy_override" data-selected_woo_term_id=""></select>
           </p>
         </main>
         <footer class="modal__footer">

@@ -13,12 +13,6 @@
   "dependencies": {
     "@splidejs/splide": "^2.4.21",
     "bootstrap": "^4.6.0",
-    "jquery": "^3.6.0",
-    "jquery-ui": "^1.12.1",
-    "livereload": "^0.9.3",
-    "node-sass": "^6.0.1",
-    "popper.js": "^1.16.1",
-    "slick-carousel": "^1.8.1",
     "browser-sync": "^2.27.5",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
@@ -40,8 +34,15 @@
     "gulp-uglify": "^3.0.2",
     "gulp-vueify": "0.0.3",
     "gulp-zip": "^5.1.0",
+    "jquery": "^3.6.0",
+    "jquery-ui": "^1.12.1",
+    "livereload": "^0.9.3",
+    "lodash": "^4.17.21",
+    "node-sass": "^6.0.1",
+    "popper.js": "^1.16.1",
     "prettier": "2.4.1",
-    "sass": "^1.42.1"
+    "sass": "^1.42.1",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@prettier/plugin-php": "^0.16.3",
