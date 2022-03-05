@@ -29,11 +29,29 @@
           MicroModal.show('modal-1');
           $('.modal__btn.modal__btn-primary').on('click', function (e) {
             e.preventDefault();
+            const nonce = $('[name="_tmdb_nonce"]').val();
             const selectedTmdbTax = $('#chosen_taxonomy_override').val();
             const selectedTmdbTaxId = _.filter(selectElements, (element) => {
               return element.title === selectedTmdbTax;
             }).pop();
-            //$.ajax()
+            $.ajax({
+              type: 'POST',
+              dataType: 'json',
+              url: admin_ajax.ajax_url,
+              data: {
+                action: 'tmdb_add_taxonomy_term_tmdb_id',
+                tmdb_tax_id: selectedTmdbTaxId.tmdb_id,
+                woo_tax: wooTax,
+                woo_id: wooId,
+                nonce,
+              },
+              success: function (response) {
+                if (response.success === true) {
+                  $('[data-tmdb-id="'+ response.data.inserted_tmdb_id +'"]').remove();
+                  MicroModal.close('modal-1');
+                }
+              },
+            });
           })
         }
       });

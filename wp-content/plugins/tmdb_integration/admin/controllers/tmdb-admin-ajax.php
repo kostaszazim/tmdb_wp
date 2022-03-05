@@ -10,6 +10,7 @@ class TMDB_Admin_Ajax
         add_action('wp_ajax_fetch_tmdb_movie_info', [$this, 'fetch_tmdb_movie_info']);
         add_action('wp_ajax_tmdb_add_taxonomy_term', [$this, 'tmdb_add_taxonomy_term']);
         add_action('wp_ajax_fetch_local_woo_product', [$this, 'fetch_local_woo_product']);
+        add_action('wp_ajax_tmdb_add_taxonomy_term_tmdb_id', [$this, 'tmdb_add_taxonomy_term_tmdb_id']);
     }
 
     public function fetch_tmdb_movie_info()
@@ -109,6 +110,25 @@ class TMDB_Admin_Ajax
             wp_send_json_error("No valid data received");
         }
         die();
+    }
+
+    public function tmdb_add_taxonomy_term_tmdb_id () {
+        $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
+        $tmdb_tax_id = isset($_POST['tmdb_tax_id']) ? $_POST['tmdb_tax_id']: '';
+        $woo_id = isset($_POST['woo_id']) ? $_POST['woo_id']: '';
+        $woo_tax = isset($_POST['woo_tax']) ? $_POST['woo_tax']: '';
+
+        if (!wp_verify_nonce($nonce, 'tmdb_import') || empty($tmdb_tax_id) || empty($woo_id) || empty($woo_tax)) {
+            wp_send_json_error('wrong data received');
+            die;
+        }
+        $wp_term = get_term($woo_id, $woo_tax);
+        if ($wp_term instanceof WP_Term) {
+            update_term_meta($wp_term->term_id, "_tmdb_id", $tmdb_tax_id );
+        }
+        
+
+        wp_send_json_success(["woo_id" => $wp_term->term_id, "woo_tax" => $wp_term->taxonomy, "inserted_tmdb_id" => get_term_meta($wp_term->term_id, "_tmdb_id", true)]);
     }
 }
 
