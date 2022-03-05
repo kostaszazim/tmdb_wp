@@ -247,6 +247,7 @@ $tmdb_movie_data = unserialize( file_get_contents(ABSPATH. '/fight_club.json'));
            <?php endif; ?>
        </tbody>
    </table>
+   <input type="hidden" name="tmdb-woo-ids" value="" id="tmdb-woo-ids">
    <?php wp_nonce_field('tmdb_import', '_tmdb_nonce'); ?>
    <?php submit_button(__('Import Movie', 'tmdb_int')); ?>
 </form>

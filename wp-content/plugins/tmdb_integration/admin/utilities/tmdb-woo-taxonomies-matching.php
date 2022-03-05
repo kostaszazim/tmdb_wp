@@ -23,22 +23,33 @@ class TMDB_Woo_Taxonomies_Matching
         return $html;
     }
 
-    public function match_taxonomies($woo_taxonomy)
+    public function match_taxonomies( \WP_Term $woo_taxonomy)
     {
+        $tmdb_id = get_term_meta($woo_taxonomy->term_id, "_tmdb_id", true);
         global $tmdb_languages;
         if ($this->current_taxonomy !== $woo_taxonomy->taxonomy) {
             $this->found = [];
             $this->not_found = $this->tmdb_taxonomies[$tmdb_languages->get_current_language()];
             $this->current_taxonomy = $woo_taxonomy->taxonomy;
         }
-        foreach ($this->tmdb_taxonomies[$tmdb_languages->get_current_language()] as $tmdb_taxonomy) {
-            $taxonomy_name = isset ($tmdb_taxonomy['name']) ? $tmdb_taxonomy['name'] : $tmdb_taxonomy;
-            similar_text(GreekSlugGenerator::getSlug($taxonomy_name), GreekSlugGenerator::getSlug($woo_taxonomy->name), $percent);
-            if ($percent > 80) {
-                if (isset($tmdb_taxonomy['id'])) {
-                    $this->found[$tmdb_taxonomy['id']] = $woo_taxonomy->term_id;
-                } else {
-                    array_push($this->found, $woo_taxonomy->name);
+        $found_taxonomy = array_filter($this->tmdb_taxonomies[$tmdb_languages->get_current_language()], function ($tmdb_tax) use ($tmdb_id) {
+            if (isset($tmdb_tax['id'])) {
+                return (string) $tmdb_tax['id'] === (string) $tmdb_id;
+            }
+            return false;
+        });
+        if (!empty($found_taxonomy)) {
+            $this->found[$tmdb_id] = $woo_taxonomy->term_id;
+        } else {
+            foreach ($this->tmdb_taxonomies[$tmdb_languages->get_current_language()] as $tmdb_taxonomy) {
+                $taxonomy_name = isset ($tmdb_taxonomy['name']) ? $tmdb_taxonomy['name'] : $tmdb_taxonomy;
+                similar_text(GreekSlugGenerator::getSlug($taxonomy_name), GreekSlugGenerator::getSlug($woo_taxonomy->name), $percent);
+                if ($percent > 80) {
+                    if (isset($tmdb_taxonomy['id'])) {
+                        $this->found[$tmdb_taxonomy['id']] = $woo_taxonomy->term_id;
+                    } else {
+                        array_push($this->found, $woo_taxonomy->name);
+                    }
                 }
             }
         }

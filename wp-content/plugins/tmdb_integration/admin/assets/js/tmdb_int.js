@@ -61,6 +61,43 @@
           })
         }
       });
+      $(this).on("select2:unselect", (e) => {
+        const nonce = $('[name="_tmdb_nonce"]').val();
+        const selectedItem = e.params.data;
+        const wooId = selectedItem.id;
+        const wooTax = $(e.target).closest('td').find('select').attr('name').replace("[]", "");
+        $.ajax({
+          type: 'POST',
+          dataType: 'json',
+          url: admin_ajax.ajax_url,
+          data: {
+            action: 'tmdb_delete_taxonomy_term_tmdb_id',
+            woo_tax: wooTax,
+            woo_id: wooId,
+            nonce,
+          },
+          success: function (response) {
+            console.log(response);
+          },
+        });
+      })
     });
+   $("input#submit").on("click", (e) => {
+     const options = $('[selected="selected"]');
+     const optionsValues = [];
+     _.forEach(options, (option) => {
+      if ($(option).data('tmdb-id') > 0) {
+        let tax_name = $(option).closest('td').find('select').attr('name').replace("[]", "");
+        let tmdb_id = $(option).data('tmdb-id');
+        let woo_id = $(option).data('woo-id')
+        optionsValues.push({
+          tmdb_id,
+          woo_id,
+          tax_name
+        })
+      }
+     })
+     $('#tmdb-woo-ids').val(JSON.stringify(optionsValues))
+   })
   });
 })(jQuery);

@@ -11,6 +11,7 @@ class TMDB_Admin_Ajax
         add_action('wp_ajax_tmdb_add_taxonomy_term', [$this, 'tmdb_add_taxonomy_term']);
         add_action('wp_ajax_fetch_local_woo_product', [$this, 'fetch_local_woo_product']);
         add_action('wp_ajax_tmdb_add_taxonomy_term_tmdb_id', [$this, 'tmdb_add_taxonomy_term_tmdb_id']);
+        add_action('wp_ajax_tmdb_delete_taxonomy_term_tmdb_id', [$this, 'tmdb_delete_taxonomy_term_tmdb_id']);
     }
 
     public function fetch_tmdb_movie_info()
@@ -95,13 +96,16 @@ class TMDB_Admin_Ajax
     public function tmdb_add_taxonomy_term()
     {
         $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
-        if (isset($_POST['taxonomy']) && isset($_POST['termValue'])  && wp_verify_nonce($nonce, 'tmdb_import')) {
+        if (isset($_POST['taxonomy']) && isset($_POST['termValue']) && isset($_POST['tmdbId']) && wp_verify_nonce($nonce, 'tmdb_import')) {
             $inserted_term = wp_insert_term(esc_html($_POST['termValue']), esc_sql($_POST['taxonomy']));
             if (isset($_POST['tmdbId']) && ($inserted_term instanceof WP_Term)) {
                 update_term_meta($inserted_term['term_id'], '_tmdb_id', $_POST['tmdbId'] );
             }
             if ($inserted_term['term_id']) {
                 $inserted_term = get_term_by('id', $inserted_term['term_id'], $_POST['taxonomy']);
+                if ($inserted_term instanceof WP_Term) {
+                    update_term_meta($inserted_term->term_id, "_tmdb_id", $_POST['tmdbId'] );
+                }
             } else {
                 wp_send_json_error($inserted_term);
             }
@@ -125,6 +129,24 @@ class TMDB_Admin_Ajax
         $wp_term = get_term($woo_id, $woo_tax);
         if ($wp_term instanceof WP_Term) {
             update_term_meta($wp_term->term_id, "_tmdb_id", $tmdb_tax_id );
+        }
+        
+
+        wp_send_json_success(["woo_id" => $wp_term->term_id, "woo_tax" => $wp_term->taxonomy, "inserted_tmdb_id" => get_term_meta($wp_term->term_id, "_tmdb_id", true)]);
+    }
+
+    public function tmdb_delete_taxonomy_term_tmdb_id () {
+        $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
+        $woo_id = isset($_POST['woo_id']) ? $_POST['woo_id']: '';
+        $woo_tax = isset($_POST['woo_tax']) ? $_POST['woo_tax']: '';
+
+        if (!wp_verify_nonce($nonce, 'tmdb_import') || empty($woo_id) || empty($woo_tax)) {
+            wp_send_json_error('wrong data received');
+            die;
+        }
+        $wp_term = get_term($woo_id, $woo_tax);
+        if ($wp_term instanceof WP_Term) {
+            update_term_meta($wp_term->term_id, "_tmdb_id", "" );
         }
         
 
