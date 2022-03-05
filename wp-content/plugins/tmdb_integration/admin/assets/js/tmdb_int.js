@@ -14,13 +14,19 @@
         $('#modal-1-title').html(title);
         const selectElements = [];
         const buttons = e.target.closest('td').querySelectorAll('.add-taxonomy-buttons-container button');
-        console.log(buttons);
         _.forEach(buttons, (element) => {
           selectElements.push({
             title: $(element).attr('data-tax-name'),
             tmdb_id: $(element).attr('data-tmdb-id'),
           });
         });
+        
+        const hasTmdbId = _.reduce(selectElements, (prev, element) => {
+          return prev && !_.isEmpty(element.tmdb_id);
+        }, true);
+        if (!hasTmdbId) {
+          return;
+        }
         _.forEach(selectElements, (element) => {
           const newOption = new Option(element.title, element.id, false, false);
           $('#chosen_taxonomy_override').append(newOption).trigger('change');
