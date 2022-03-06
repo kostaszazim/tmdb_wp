@@ -10,6 +10,7 @@ class TMDB_Woo_Taxonomies_Matching
     private $not_found = [];
     private $current_taxonomy = null;
     private $tmdb_taxonomies = [];
+    private $all_tmdb_taxonomies = [];
 
     public function get_html($woo_term)
     {
@@ -61,13 +62,17 @@ class TMDB_Woo_Taxonomies_Matching
         $this->not_found = array_filter($this->not_found, function ($element) {
             if (!isset($element['id'])) {
                 return !in_array($element, $this->found);
-            }
+            }   
             return !array_key_exists($element['id'], $this->found);
         }); 
         $html = '<div class="add-taxonomy-buttons-container">';
         ob_start();
-        foreach ($this->not_found as $id => $not_found) { ?>
-            <button type="button" class="button button-primary add-taxonomy" data-current-language="<?php echo $tmdb_languages->get_current_language(); ?>" data-taxonomy="<?php echo $this->current_taxonomy; ?>" data-tmdb-id="<?php echo isset($not_found['id']) ? $not_found['id']: ''; ?>" data-tax-name="<?php echo  isset($not_found['name']) ? $not_found['name'] : $not_found; ?>"><?php echo isset($not_found['name']) ? __('Add') . ': ' . $not_found['name'] :  __('Add') . ': ' . $not_found; ?></button>
+        foreach ($this->not_found as $id => $not_found) { 
+            $other_languages = $tmdb_languages->get_other_languages();
+            ?>
+            <button type="button" class="button button-primary add-taxonomy" <?php foreach ($other_languages as $other_language): 
+                $element = array_filter($this->all_tmdb_taxonomies[$other_language], function ($element) use ($not_found) { return isset($element['id']) && (int) $element['id'] === (int) $not_found['id']; }); 
+                if (count($element) > 0) { $element = $element[array_key_first($element)]; echo 'data-tax-name-'.$other_language.'="'. $element['name']  .'"'; } endforeach; ?> data-current-language="<?php echo $tmdb_languages->get_current_language(); ?>" data-taxonomy="<?php echo $this->current_taxonomy; ?>" data-tmdb-id="<?php echo isset($not_found['id']) ? $not_found['id']: ''; ?>" data-tax-name-<?php echo $tmdb_languages->get_current_language();?>="<?php echo  isset($not_found['name']) ? $not_found['name'] : $not_found; ?>"><?php echo isset($not_found['name']) ? __('Add') . ': ' . $not_found['name'] :  __('Add') . ': ' . $not_found; ?></button>
             <?php }
         $html .= ob_get_contents();
         ob_end_clean();
@@ -78,6 +83,17 @@ class TMDB_Woo_Taxonomies_Matching
     public function set_tmdb_taxonomies ($tmdb_taxonomies, $woo_taxonomy_slug) {
         $this->current_taxonomy = $woo_taxonomy_slug;
         global $tmdb_languages;
+        $current_language = $tmdb_languages->get_current_language();
+        $other_languages = $tmdb_languages->get_other_languages();
+        foreach ($other_languages as $other_language) {
+            $this->all_tmdb_taxonomies[$other_language] = [];
+            array_walk($tmdb_taxonomies[$other_language], function ($element) use ($other_language) {
+                if (isset($element['id'])) {
+                    array_push( $this->all_tmdb_taxonomies[$other_language], $element);
+                }
+            });
+            
+        }
         $this->found = [];
         $this->not_found = $tmdb_taxonomies[$tmdb_languages->get_current_language()];
         $this->tmdb_taxonomies =  $tmdb_taxonomies;

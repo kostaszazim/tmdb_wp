@@ -60,6 +60,12 @@ class TMDB_Language_Setup
     public function get_supported_languages () {
         return $this->supported_languages;
     }
+
+    public function get_other_languages () {
+        return array_filter($this->get_supported_languages(), function ($language) {
+            return $language !== $this->get_current_language();
+        });
+    }
 }
 
 

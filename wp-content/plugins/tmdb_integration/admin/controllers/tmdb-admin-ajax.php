@@ -95,16 +95,47 @@ class TMDB_Admin_Ajax
 
     public function tmdb_add_taxonomy_term()
     {
+        global $tmdb_languages;
+        $current_language = $tmdb_languages->get_current_language();
+        $other_languages = $tmdb_languages->get_other_languages();
         $nonce = isset($_POST['nonce']) ? $_POST['nonce']: '';
-        if (isset($_POST['taxonomy']) && isset($_POST['termValue']) && isset($_POST['tmdbId']) && wp_verify_nonce($nonce, 'tmdb_import')) {
-            $inserted_term = wp_insert_term(esc_html($_POST['termValue']), esc_sql($_POST['taxonomy']));
-            if (isset($_POST['tmdbId']) && ($inserted_term instanceof WP_Term)) {
-                update_term_meta($inserted_term['term_id'], '_tmdb_id', $_POST['tmdbId'] );
+        if (isset($_POST['tax_data']) && wp_verify_nonce($nonce, 'tmdb_import')) {
+            $tax_data = $_POST['tax_data'];
+            $inserted_term = wp_insert_term(esc_html($tax_data['taxName'.ucfirst($current_language)]), esc_sql($tax_data['taxonomy']));
+            if( is_wp_error( $inserted_term ) ) {
+                $tx_id_or = $inserted_term->get_error_data();
+            }
+         
+            if( ! is_wp_error( $inserted_term ) ) {
+                $tx_id_or = $inserted_term['term_id'];
+            }
+            if (isset($tax_data['tmdbId']) && ($inserted_term instanceof WP_Term)) {
+                update_term_meta($inserted_term['term_id'], '_tmdb_id', $tax_data['tmdbId'] );
             }
             if ($inserted_term['term_id']) {
-                $inserted_term = get_term_by('id', $inserted_term['term_id'], $_POST['taxonomy']);
-                if ($inserted_term instanceof WP_Term) {
-                    update_term_meta($inserted_term->term_id, "_tmdb_id", $_POST['tmdbId'] );
+                $inserted_term = get_term_by('id', $inserted_term['term_id'], $tax_data['taxonomy']);
+                    
+                foreach ($other_languages as $other_language) {
+                    global $sitepress;
+                    $inserted_term_trans = wp_insert_term(esc_html($tax_data['taxName'.ucfirst($other_language)]), esc_sql($tax_data['taxonomy']), ['slug' => sanitize_title($tax_data['taxName'.ucfirst($other_language)])."_".$other_language]);
+                    if( is_wp_error( $inserted_term_trans ) ) {
+                        $tx_id_trans = $inserted_term_trans->get_error_data();
+                    }
+         
+                    if( ! is_wp_error( $inserted_term_trans ) ) {
+                        $tx_id_trans = $inserted_term_trans['term_id'];
+                    }
+                    $wpml_element_type = apply_filters( 'wpml_element_type', $tax_data['taxonomy'] );
+                    $get_language_args = array('element_id' => $tx_id_or, 'element_type' =>  $wpml_element_type );
+                    $tx_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
+                    $set_language_args = array(
+                        'element_id' =>  $tx_id_trans,
+                        'element_type' => $wpml_element_type,
+                        'trid' => $tx_info->trid,
+                        'language_code' => $other_language,
+                        'source_language_code' => $tx_info->language_code
+                    );
+                    do_action( 'wpml_set_element_language_details', $set_language_args );
                 }
             } else {
                 wp_send_json_error($inserted_term);

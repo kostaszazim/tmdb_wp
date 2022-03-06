@@ -2,11 +2,7 @@
 if (!defined('ABSPATH')) {
     exit();
 }
-if (isset($_POST['submit']) && $_POST['submit'] === 'Import Movie') {
-    echo '<pre>';
-    print_r($_POST);    
-    echo '</pre>';
-}
+
 $settings_db = new TMDB_Settings_Db();
 $mapped_taxonomies = $settings_db->get_mapped_taxonomies();
 $tmdb_movie_data = isset($_POST['tmdb_movie_data']) ? $_POST['tmdb_movie_data'] : false;
