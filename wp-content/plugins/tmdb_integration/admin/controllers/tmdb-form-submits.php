@@ -38,42 +38,46 @@ class TMDB_Int_Form_Submits
                 $tmdb_simple_product_id = $tmdb_simple_product->get_created_product_id();
                 foreach ($tmdb_languages->get_supported_languages() as $language_code) {
                     if ($tmdb_languages->get_current_language() !== $language_code) {
-                       $translated_product = new TMDB_Import_Simple_Variable_Product($product, $_POST, $language_code);
-                       $translated_product_id = $translated_product->get_created_product_id();
-                       $this->assign_translations($tmdb_simple_product_id, $translated_product_id, $language_code);
+                        $original_translated_post_id = apply_filters('wpml_object_id', (int) $tmdb_options['selected_movie_prototype_id'], 'product', false, $language_code);
+                        $translated_product = wc_get_product($original_translated_post_id);
+                        $translated_product = new TMDB_Import_Simple_Variable_Product($translated_product, $_POST, $language_code);
+                        $translated_product_id = $translated_product->get_created_product_id();
+                        $this->assign_translations($tmdb_simple_product_id, $translated_product_id, $language_code);
                     }
                 }
             }
         } else {
-                // Create without product prototype
+            // Create without product prototype
         }
     }
 
-    public function refresh_tmdb_woo_ids () {
+    public function refresh_tmdb_woo_ids()
+    {
         if (isset($_POST['tmdb-woo-ids']) && $_POST['tmdb-woo-ids'] !== '') {
-            $json_string = str_replace("\\", "", $_POST['tmdb-woo-ids']);
-            $tmdb_woo_ids = json_decode($json_string, false, 512,JSON_THROW_ON_ERROR);
-           foreach ($tmdb_woo_ids as $tmdb_woo_id) {
-               $wp_term = get_term($tmdb_woo_id->woo_id, $tmdb_woo_id->tax_name);
-               if ($wp_term instanceof \WP_Term) {
-                   update_term_meta($wp_term->term_id, "_tmdb_id", $tmdb_woo_id->tmdb_id);
-               }
-           }
+            $json_string = str_replace('\\', '', $_POST['tmdb-woo-ids']);
+            $tmdb_woo_ids = json_decode($json_string, false, 512, JSON_THROW_ON_ERROR);
+            foreach ($tmdb_woo_ids as $tmdb_woo_id) {
+                $wp_term = get_term($tmdb_woo_id->woo_id, $tmdb_woo_id->tax_name);
+                if ($wp_term instanceof \WP_Term) {
+                    update_term_meta($wp_term->term_id, '_tmdb_id', $tmdb_woo_id->tmdb_id);
+                }
+            }
         }
     }
 
-    public function assign_translations ($original_lang_product_id, $translated_product_id, $translation_language_code) {
-        $wpml_element_type = apply_filters( 'wpml_element_type', 'product' );
-        $get_language_args = array('element_id' => $original_lang_product_id, 'element_type' => $wpml_element_type );
-        $original_post_language_info = apply_filters( 'wpml_element_language_details', null, $get_language_args );
-        $set_language_args = array(
-            'element_id'    => $translated_product_id,
-            'element_type'  => $wpml_element_type,
-            'trid'   => $original_post_language_info->trid,
-            'language_code'   => $translation_language_code,
-            'source_language_code' => $original_post_language_info->language_code
-        );
-        do_action( 'wpml_set_element_language_details', $set_language_args );
+    public function assign_translations($original_lang_product_id, $translated_product_id, $translation_language_code)
+    {
+        $wpml_element_type = apply_filters('wpml_element_type', 'product');
+        $get_language_args = ['element_id' => $original_lang_product_id, 'element_type' => $wpml_element_type];
+        $original_post_language_info = apply_filters('wpml_element_language_details', null, $get_language_args);
+        $set_language_args = [
+            'element_id' => $translated_product_id,
+            'element_type' => $wpml_element_type,
+            'trid' => $original_post_language_info->trid,
+            'language_code' => $translation_language_code,
+            'source_language_code' => $original_post_language_info->language_code,
+        ];
+        do_action('wpml_set_element_language_details', $set_language_args);
     }
 }
 new TMDB_Int_Form_Submits();
