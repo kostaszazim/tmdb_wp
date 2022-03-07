@@ -6,6 +6,7 @@ if (!defined('ABSPATH')) {
 
 class TMDB_Int_Form_Submits
 {
+    protected $translated_terms = [];
     function __construct()
     {
         add_action('admin_init', [$this, 'is_movie_details_submit'], 30);
@@ -60,6 +61,62 @@ class TMDB_Int_Form_Submits
                 $wp_term = get_term($tmdb_woo_id->woo_id, $tmdb_woo_id->tax_name);
                 if ($wp_term instanceof \WP_Term) {
                     update_term_meta($wp_term->term_id, '_tmdb_id', $tmdb_woo_id->tmdb_id);
+                }
+            }
+        }
+    }
+
+    protected function translate_wp_terms () {
+        $options = get_option(TMDB_OPTIONS);
+        $woo_tax_terms = array_filter($_POST, function ($element, $key) {
+            return strpos($key, 'pa_') !== false;
+        }, ARRAY_FILTER_USE_BOTH);
+        global $tmdb_languages;
+        foreach ($woo_tax_terms as $tax_key => $term_ids) {
+            foreach ($term_ids as $term_id) {
+                $current_language_term = get_term_by('id', $term_id, $tax_key);
+                if ($current_language_term instanceof \WP_Term) {
+                    foreach ($tmdb_languages->get_other_languages() as $language_code) {
+                        $translated_term_id = apply_filters( 'wpml_object_id', $current_language_term->term_id, $tax_key, false, $language_code );
+                        if (!$translated_term_id) {
+                            $tmdb_id = get_term_meta($current_language_term->term_id, "_tmdb_id", true);
+                            if ($tmdb_id && $options['genre_woo_taxonomy'] === $tax_key) {
+                                $genres_request = new TMDB_Genres_Requests($language_code);
+                                $response = $genres_request->fetch_genres();
+                                $response = json_decode($response);
+                                $translated_tmdb_genre = array_filter($response->genres, function ($element) use ($tmdb_id) {
+                                    return $element->id === (int) $tmdb_id;
+                                });
+                                if (!empty($translated_tmdb_genre)) {
+                                    $translated_tmdb_genre = $translated_tmdb_genre[array_key_first($translated_tmdb_genre)];
+                                }
+                                $translated_term_title = $translated_tmdb_genre->name;
+                            } else {
+                                $translated_term_title = $current_language_term->name;
+                            }
+                            $inserted_term_trans = wp_insert_term(esc_html($translated_term_title), esc_sql($tax_key), [
+                                'slug' => sanitize_title($translated_term_title) . '_' . $language_code,
+                            ]);
+                            if (is_wp_error($inserted_term_trans)) {
+                                $tx_id_trans = $inserted_term_trans->get_error_data();
+                            }
+        
+                            if (!is_wp_error($inserted_term_trans)) {
+                                $tx_id_trans = $inserted_term_trans['term_id'];
+                            }
+                            $wpml_element_type = apply_filters('wpml_element_type', $tax_key);
+                            $get_language_args = ['element_id' => $current_language_term->term_id, 'element_type' => $wpml_element_type];
+                            $original_term_language_info = apply_filters('wpml_element_language_details', null, $get_language_args);
+                            $set_language_args = [
+                                'element_id' => $tx_id_trans,
+                                'element_type' => $wpml_element_type,
+                                'trid' => $original_term_language_info->trid,
+                                'language_code' => $language_code,
+                                'source_language_code' => $original_term_language_info->language_code,
+                            ];
+                            do_action('wpml_set_element_language_details', $set_language_args);
+                        }
+                    }
                 }
             }
         }
