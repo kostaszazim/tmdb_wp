@@ -107,7 +107,7 @@
             if (response.status === 'ok') {
               const option = new Option(response.term.name, response.term.term_id, false, true);
               $(e.target).closest('td').find('select').append(option);
-              $(e.target).animate({ opacity: 0 });
+              $(e.target).animate({ opacity: 0 }).attr("data-is-hidden", "true");
             }
           },
         });

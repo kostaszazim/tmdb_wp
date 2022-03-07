@@ -22,6 +22,7 @@ class TMDB_Admin_Main_Menu_Page extends TMDB_Admin_Page
         wp_enqueue_style('jquery-ui', 'https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css');
         wp_enqueue_script( 'select2-jq', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', ['jquery'] );
         wp_enqueue_script( 'tmdb',  TMDB_INT__PLUGIN_DIR_URL . '/admin/assets/js/tmdb_int.js' , ['jquery'] );
+        wp_localize_script('tmdb', 'tmdb_languages', ['current_language' => apply_filters( 'wpml_current_language', NULL )]);
         wp_enqueue_style('select2-style', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css');
         wp_enqueue_script('micromodal', TMDB_INT__PLUGIN_DIR_URL . '/admin/libs/micromodal/micromodal.min.js' );
         wp_enqueue_style('micromodal-style', TMDB_INT__PLUGIN_DIR_URL . '/admin/libs/micromodal/micromodal.css' );

@@ -46,6 +46,9 @@ class TMDB_Int_Form_Submits
                         $this->assign_translations($tmdb_simple_product_id, $translated_product_id, $language_code);
                     }
                 }
+                if ((int) $tmdb_simple_product_id > 0) {
+                    wp_safe_redirect(get_admin_url()."post.php?post=".$tmdb_simple_product_id."&action=edit&lang=".$tmdb_languages->get_current_language());
+                }   
             }
         } else {
             // Create without product prototype

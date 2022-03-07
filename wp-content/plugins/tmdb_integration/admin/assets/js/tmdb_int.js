@@ -15,12 +15,13 @@
         const selectElements = [];
         const buttons = e.target.closest('td').querySelectorAll('.add-taxonomy-buttons-container button');
         _.forEach(buttons, (element) => {
-          selectElements.push({
-            title: $(element).attr('data-tax-name'),
-            tmdb_id: $(element).attr('data-tmdb-id'),
-          });
+          if ($(element).attr('data-is-hidden') !== 'true') {
+            selectElements.push({
+              title: $(element).attr('data-tax-name-'+ tmdb_languages.current_language),
+              tmdb_id: $(element).attr('data-tmdb-id'),
+            });
+          }
         });
-        
         const hasTmdbId = _.reduce(selectElements, (prev, element) => {
           return prev && !_.isEmpty(element.tmdb_id);
         }, true);
