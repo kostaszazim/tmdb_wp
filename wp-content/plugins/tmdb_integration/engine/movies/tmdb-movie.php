@@ -38,11 +38,14 @@ class TMDB_Movie extends TMDB_Multilanguage_Content
 
     private function setup_movie_data()
     {
+        global $tmdb_languages;
         $tmdb_options = get_option(TMDB_OPTIONS);
         foreach ($this->movie_details_response as $lang_code => $response) {
             $this->movie_titles[$lang_code] = $response->title;
             $this->movie_summary[$lang_code] = $response->overview;
-            $this->movie_poster = $tmdb_options['base_img_url'] . $tmdb_options['poster_sizes'] . $response->poster_path;
+            if ($tmdb_languages->get_current_language() === $lang_code) {
+                $this->movie_poster = $tmdb_options['base_img_url'] . $tmdb_options['poster_sizes'] . $response->poster_path;
+            }
             $this->movie_genres[$lang_code] = array_map(function ($element) {
                 $genre = [];
                 $genre['id'] = $element->id;

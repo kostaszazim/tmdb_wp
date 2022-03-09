@@ -29,6 +29,7 @@ class TMDB_Int_Form_Submits
             return;
         }
         $this->refresh_tmdb_woo_ids();
+        $this->translate_wp_terms();
         $tmdb_options = get_option(TMDB_OPTIONS);
         if (isset($tmdb_options['selected_movie_prototype_id']) && !empty($tmdb_options['selected_movie_prototype_id'])) {
             $product = wc_get_product($tmdb_options['selected_movie_prototype_id']);

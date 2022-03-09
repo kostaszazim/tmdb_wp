@@ -17,8 +17,8 @@ class TMDB_Import_Simple_Variable_Product extends TMDB_Import_Prototype
                     $new_wc_attribute->set_id($product_attribute->get_id());
                     $new_wc_attribute->set_name($product_attribute->get_name());
                     $new_wc_attribute->set_options(
-                        array_map(function ($element) {
-                            return (int) $element;
+                        array_map(function ($element) use ($product_attribute) {
+                            return (int) apply_filters('wpml_object_id', $element, $product_attribute->get_taxonomy(), false, $this->language_code );
                         }, $this->tmdb_movie_info[$pa_name]),
                     );
                     $new_wc_attribute->set_position($product_attribute->get_position());
